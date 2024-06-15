@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - '443:443'
+    volumes:
+      - ./dockerprojekt.de:/etc/letsencrypt:ro
+    networks:
+      - webnet
+    depends_on:
+      - app
+
+  app:
+    build: ./app
+    container_name: app_container
+    hostname: web1
+    ports:
+      - "9000:3000"
+    networks:
+      - webnet
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_PORT=3307
+      - DATABASE_USER=test
+      - DATABASE_PASSWORD=test
+      - DATABASE_NAME=test
+    depends_on:
+      - db
+      
+  db:
+    image: postgres:latest
+    container_name: db_container
+    ports:
+      - "5432:5432"
+    networks:
+      - webnet
+    environment:
+      - POSTGRES_DB=test
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+    volumes:
+      - db_dataa:/var/lib/postgresql/data
+      
+networks:
+  webnet:
+    driver: bridge
+volumes:
+  db_dataa:

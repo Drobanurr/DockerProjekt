@@ -1,0 +1,9 @@
+{
+  "name": "moritz",
+  "version": "0.0.0",
+  "dependencies": {
+    "express": "~4.16.1",
+    "mysql2": "^2.2.5",
+    "pg": "^8.8.0"
+  }
+}
